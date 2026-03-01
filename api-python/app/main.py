@@ -1,10 +1,24 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
  
 app = FastAPI(
     title="task manager API",
     description="API para gerenciamento de tarefas",
     version="1.0.0"
 )
+
+class Task(BaseModel):
+    title: str
+    description: str
+    completed: bool = False
+
+@app.post("/tasks")
+def create_task(task: Task):
+    return {
+        "messsage" : "Tarefa criada com sucesso",
+        "task": task
+    }
+
 
 @app.get("/health")
 def health_check():
