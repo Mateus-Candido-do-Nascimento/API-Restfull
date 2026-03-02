@@ -29,7 +29,6 @@ def welcome():
 def health_check():
     return {"status": "ok"}
 
-# ✅ Fix 1: response_model=TaskResponse
 @app.post("/tasks", response_model=TaskResponse, status_code=201)
 def create_task(task: Task):
     task_dict = task.dict()
@@ -37,7 +36,6 @@ def create_task(task: Task):
     tasks.append(task_dict)
     return task_dict
 
-# ✅ Fix 4: /tasks antes de /tasks/{task_id}
 @app.get("/tasks", response_model=list[TaskResponse], status_code=200)
 def list_tasks(completed: Optional[bool] = None):
     if completed is None:
@@ -51,7 +49,7 @@ def get_task(task_id: int):
             return task
     raise HTTPException(status_code=404, detail="task nao encontrada")
 
-# ✅ Fix 2 e 3: retorna apenas a task, sem chave com espaço
+
 @app.put("/tasks/{task_id}", response_model=TaskResponse, status_code=200)
 def update_task(task_id: int, task_update: Task):
     for task in tasks:
