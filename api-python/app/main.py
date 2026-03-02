@@ -36,11 +36,17 @@ def delete_by_id(task_id: int):
     raise HTTPException(status_code=404, detail="task nao encontrada") 
     
 
+@app.put("/tasks/{task_id}")
+def update_task(task_id: int, task_update: Task):
+    for task in tasks:
+        if task["id"]==task_id:
+            task["title"]= task_update.title
+            task["description"]= task_update.description
+            task["completed"] = task_update.completed
+            return{"message ":"task atualizada ","task": task}
+    raise HTTPException(status_code=404, detail="task nao encontrada")
+        
 
-
-@app.get("/tasks")
-def list_tasks():
-    return tasks
 
 @app.get("/health")
 def health_check():
